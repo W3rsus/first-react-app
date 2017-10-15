@@ -2,52 +2,33 @@ import React, {Component} from 'react';
 import Product from './Product';
 
 class ProductList extends Component {
-    handleProductUpVote(productId){
-        console.log(productId + ' was upvoted !');
+    constructor(props) {
+        super(props);
+
+        this.state = {product: []};
+        this.handleProductUpVote = this.handleProductUpVote.bind(this);
     }
+
+    componentDidMount() {
+        this.setState({product: require('../seed.products')});
+    }
+
+    handleProductUpVote(productId) {
+        const nextProducts = this.state.product.map((prod)=>{
+            if(prod.id === productId){
+                return Object.assign({} ,prod, {
+                    votes: prod.votes+1
+                });
+            }else {
+                return prod;
+            }
+        });
+        this.setState({product: nextProducts});
+    }
+
     render() {
-        function generateVoteCount() {
-            return Math.floor((Math.random() * 50) + 15);
-        }
-        const product = [
-            {
-                id: 1,
-                title: 'Yellow Pail',
-                description: 'On-demand sand castle construction expertise.',
-                url: '#',
-                votes: generateVoteCount(),
-                submitterAvatarUrl: require('../images/avatars/daniel.jpg'),
-                productImageUrl: require('../images/products/image-aqua.png'),
-            },
-            {
-                id: 2,
-                title: 'Supermajority: The Fantasy Congress League',
-                description: 'Earn points when your favorite politicians pass legislation.',
-                url: '#',
-                votes: generateVoteCount(),
-                submitterAvatarUrl: require('../images/avatars/kristy.png'),
-                productImageUrl: require('../images/products/image-rose.png'),
-            },
-            {
-                id: 3,
-                title: 'Tinfoild: Tailored tinfoil hats',
-                description: 'We already have your measurements and shipping address.',
-                url: '#',
-                votes: generateVoteCount(),
-                submitterAvatarUrl: require('../images/avatars/veronika.jpg'),
-                productImageUrl: require('../images/products/image-steel.png'),
-            },
-            {
-                id: 4,
-                title: 'Haught or Naught',
-                description: 'High-minded or absent-minded? You decide.',
-                url: '#',
-                votes: generateVoteCount(),
-                submitterAvatarUrl: require('../images/avatars/molly.png'),
-                productImageUrl: require('../images/products/image-yellow.png'),
-            },
-        ];
-        const products = product.sort((a, b) => (b.votes - a.votes));
+
+        const products = this.state.product.sort((a, b) => (b.votes - a.votes));
         const productComponents = products.map((product) => (
             <Product
                 key={'product-' + product.id}
