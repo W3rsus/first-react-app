@@ -2,18 +2,13 @@ import React, {Component} from 'react';
 import Product from './Product';
 
 class ProductList extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {product: []};
-        this.handleProductUpVote = this.handleProductUpVote.bind(this);
-    }
+        state = {product: []};
 
     componentDidMount() {
         this.setState({product: require('../seed.products')});
     }
 
-    handleProductUpVote(productId) {
+    handleProductUpVote = (productId) => {
         const nextProducts = this.state.product.map((prod)=>{
             if(prod.id === productId){
                 return Object.assign({} ,prod, {

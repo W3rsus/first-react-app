@@ -4,11 +4,10 @@ class Product extends React.Component {
     constructor(props){
         super(props);
 
-        this.handleUpvote = this.handleUpvote.bind(this);
+        // this.handleUpvote = this.handleUpvote.bind(this);
     }
-    handleUpvote(){
-        this.props.onVote(this.props.id);
-    }
+    handleUpvote = () =>(
+        this.props.onVote(this.props.id));
     render() {
         return (
             <div className='item'>
